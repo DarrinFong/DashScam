@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">DashScam</string>
+    <string name="app_name">EAT@IDK</string>
 
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="eat_where">TELL ME</string>
+    <string name="initial_content">WHERE\nTO EAT</string>
+    <string name="next_place">NEXTED</string>
 </resources>
