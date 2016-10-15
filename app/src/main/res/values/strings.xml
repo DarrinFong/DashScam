@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">EAT@IDK</string>
 
-    <string name="eat_where">TELL ME</string>
-    <string name="initial_content">WHERE\nTO EAT</string>
-    <string name="next_place">NEXTED</string>
+    <string name="initial_content">WHERE\nTO EAT?</string>
 </resources>
