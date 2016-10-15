@@ -4,4 +4,5 @@
     <string name="eat_where">TELL ME</string>
     <string name="initial_content">WHERE\nTO EAT</string>
     <string name="next_place">NEXTED</string>
+    <string name="take_me_there">TAKE ME THERE</string>
 </resources>
