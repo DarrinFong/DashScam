@@ -9,6 +9,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.app.Activity;
+import android.util.Log;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -36,6 +44,7 @@ public class CameraScreen extends AppCompatActivity {
     private View mControlsView;
     private boolean mVisible;
 
+    private readPlaces data = new readPlaces();
     private Place[] places;
     private int placeNumber = 0;
 
@@ -59,6 +68,65 @@ public class CameraScreen extends AppCompatActivity {
         });
         show();
         getPlaces();
+        new AsyncTaskParseJson().execute();
+    }
+
+    public class AsyncTaskParseJson extends AsyncTask<String, String, String> {
+
+        final String TAG = "AsyncTaskParseJson.java";
+
+        // set your json string url here
+        String yourJsonStringUrl =
+        "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key="
+                + "AIzaSyBxMCOTGHxkqZcAjIqcPgJVYCDTveFhFo0";
+
+
+        // contacts JSONArray
+        JSONArray dataJsonArr = null;
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected String doInBackground(String... arg0) {
+
+            try {
+                // instantiate our json parser
+                JsonParser jParser = new JsonParser();
+
+                // get json string from url
+                JSONObject json = jParser.getJSONFromUrl(yourJsonStringUrl);
+
+                // get the array of users
+                dataJsonArr = json.getJSONArray("results");
+
+                // loop through all users
+                for (int i = 0; i < dataJsonArr.length(); i++) {
+
+                    JSONObject c = dataJsonArr.getJSONObject(i);
+
+                    // Storing each json item in variable
+                    String name = c.getString("name");
+                    String address = c.getString("vicinity");
+                    String rating = c.getString("rating");
+
+                    // show the values in our logcat
+                    placeNumber = 0;
+                    places = new Place[15];
+                    for(int kkk = 0; kkk < places.length; kkk++){
+                        places[kkk] = new Place(name, address, rating);
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String strFromDoInBg) {}
     }
 
     @Override
@@ -92,11 +160,7 @@ public class CameraScreen extends AppCompatActivity {
     }
 
     private void getPlaces(){
-        placeNumber = 0;
-        places = new Place[15];
-        for(int i = 0; i < places.length; i++){
-            places[i] = new Place(i+"", i+"", i+"");
-        }
+
     }
 
     private void hide() {
