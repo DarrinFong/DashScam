@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-public class JsonParser {
+class JsonParser {
 
     final String TAG = "JsonParser.java";
 
@@ -29,7 +29,7 @@ public class JsonParser {
     static JSONObject jObj = null;
     static String json = "";
 
-    public JSONObject getJSONFromUrl(String url) {
+    JSONObject getJSONFromUrl(String url) {
 
         // make HTTP request
         try {

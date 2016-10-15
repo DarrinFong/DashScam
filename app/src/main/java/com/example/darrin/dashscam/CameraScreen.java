@@ -10,9 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.app.Activity;
-import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +41,6 @@ public class CameraScreen extends AppCompatActivity {
     private View mControlsView;
     private boolean mVisible;
 
-    private readPlaces data = new readPlaces();
     private Place[] places;
     private int placeNumber = 0;
 
@@ -67,7 +63,6 @@ public class CameraScreen extends AppCompatActivity {
             }
         });
         show();
-        getPlaces();
         new AsyncTaskParseJson().execute();
     }
 
@@ -77,9 +72,8 @@ public class CameraScreen extends AppCompatActivity {
 
         // set your json string url here
         String yourJsonStringUrl =
-        "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&key="
+        "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=43.0147,-81.3049&radius=2000&type=restaurant&key="
                 + "AIzaSyBxMCOTGHxkqZcAjIqcPgJVYCDTveFhFo0";
-
 
         // contacts JSONArray
         JSONArray dataJsonArr = null;
@@ -99,23 +93,28 @@ public class CameraScreen extends AppCompatActivity {
 
                 // get the array of users
                 dataJsonArr = json.getJSONArray("results");
+                places = new Place[dataJsonArr.length()];
 
                 // loop through all users
                 for (int i = 0; i < dataJsonArr.length(); i++) {
-
+                    System.out.println(i);
                     JSONObject c = dataJsonArr.getJSONObject(i);
 
-                    // Storing each json item in variable
-                    String name = c.getString("name");
-                    String address = c.getString("vicinity");
-                    String rating = c.getString("rating");
+                    String name = "-", rating = "-", address = "-";
 
-                    // show the values in our logcat
-                    placeNumber = 0;
-                    places = new Place[15];
-                    for(int kkk = 0; kkk < places.length; kkk++){
-                        places[kkk] = new Place(name, address, rating);
+                    // Storing each json item in variable
+                    if(c.has("name")) {
+                        name = c.getString("name");
                     }
+                    if(c.has("rating")) {
+                        rating = c.getString("rating");
+                    }
+                    if(c.has("vicinity")) {
+                        address = c.getString("vicinity");
+                    }
+
+                    // put values in places array
+                    places[i] = new Place(name, rating, address);
                 }
 
             } catch (JSONException e) {
@@ -156,11 +155,14 @@ public class CameraScreen extends AppCompatActivity {
 
     private void nextPlace() {
         TextView t = (TextView)findViewById(R.id.fullscreen_content);
-        t.setText(places[placeNumber++].NAME);
-    }
-
-    private void getPlaces(){
-
+        if(placeNumber < places.length) {
+            t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING);
+            placeNumber++;
+        } else{
+            placeNumber = 0;
+            t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING);
+            placeNumber++;
+        }
     }
 
     private void hide() {

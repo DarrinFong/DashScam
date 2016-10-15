@@ -14,7 +14,7 @@
         android:keepScreenOn="true"
         android:textColor="#33b5e5"
         android:textStyle="bold"
-        android:textSize="50sp"
+        android:textSize="35sp"
         android:gravity="center"
         android:text="@string/initial_content" />
 
@@ -35,5 +35,4 @@
 
         </LinearLayout>
     </FrameLayout>
-
 </FrameLayout>

@@ -6,12 +6,12 @@ package com.example.darrin.dashscam;
 
 class Place {
     String NAME;
-    String DESCRIPTION;
+    String RATING;
     String ADDRESS;
 
-    Place(String name, String description, String address){
+    protected Place(String name, String rating, String address){
         NAME = name;
-        DESCRIPTION = description;
+        RATING = rating;
         ADDRESS = address;
     }
 }
