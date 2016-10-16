@@ -24,8 +24,7 @@
         android:layout_height="75dp"
         android:layout_margin="30dp"
         android:background="@drawable/map_custom"
-        android:layout_gravity="bottom|right"
-        android:onClick="googleMaps"/>
+        android:layout_gravity="bottom|right"/>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->

@@ -1,6 +1,8 @@
 package com.example.darrin.dashscam;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,7 +45,7 @@ public class CameraScreen extends AppCompatActivity {
     private boolean mVisible;
 
     private Place[] places;
-    private int placeNumber = 0;
+    private int placeNumber = -1;
     Button redirect;
 
     @Override
@@ -55,13 +57,27 @@ public class CameraScreen extends AppCompatActivity {
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
-
+        redirect = (Button) findViewById(R.id.the_button);
+        redirect.setVisibility(View.GONE);
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 nextPlace();
+            }
+        });
+        redirect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + places[placeNumber].ADDRESS + " (" + places[placeNumber].NAME  + ") ");
+                // google.navigation:q=latitude,longitude
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
             }
         });
         show();
@@ -102,7 +118,7 @@ public class CameraScreen extends AppCompatActivity {
                     System.out.println(i);
                     JSONObject c = dataJsonArr.getJSONObject(i);
 
-                    String name = "-", rating = "-", address = "-";
+                    String name = "-", rating = "-", address = "-", geometry = "-";
 
                     // Storing each json item in variable
                     if(c.has("name")) {
@@ -114,9 +130,13 @@ public class CameraScreen extends AppCompatActivity {
                     if(c.has("vicinity")) {
                         address = c.getString("vicinity");
                     }
-
+                    if(c.has("geometry.location")){
+                        geometry = c.getString("geometry.location.lat");
+                        geometry += ",";
+                        geometry += c.getString("geometry.location.lng");
+                    }
                     // put values in places array
-                    places[i] = new Place(name, rating, address);
+                    places[i] = new Place(name, rating, address, geometry);
                 }
 
             } catch (JSONException e) {
@@ -156,17 +176,15 @@ public class CameraScreen extends AppCompatActivity {
     };
 
     private void nextPlace() {
+        redirect.setVisibility(View.VISIBLE);
         TextView t = (TextView)findViewById(R.id.fullscreen_content);
-        redirect = (Button) findViewById(R.id.the_button);
+        placeNumber++;
         if(placeNumber < places.length) {
-            t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING);
-            placeNumber++;
-        } else{
+            t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING + "\n\nAddress: " + places[placeNumber].ADDRESS);
+        } else {
             placeNumber = 0;
-            t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING);
-            placeNumber++;
+            t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING + "\n\nAddress: " + places[placeNumber].ADDRESS);
         }
-        redirect.setOnClickListener(new GoogleMapButtonOnclickListener(places[placeNumber].));
     }
 
     private void hide() {
