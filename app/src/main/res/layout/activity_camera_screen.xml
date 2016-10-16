@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#f47142"
     tools:context="com.example.darrin.dashscam.CameraScreen">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -12,17 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:keepScreenOn="true"
-        android:textColor="#33b5e5"
+        android:textColor="#ff967c"
         android:textStyle="bold"
         android:textSize="35sp"
         android:gravity="center"
+        android:layout_margin="30dp"
         android:text="@string/initial_content" />
 
     <Button
         android:id="@+id/the_button"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_margin="30dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
         android:background="@drawable/map_custom"
         android:layout_gravity="bottom|right"/>
 
@@ -37,7 +38,7 @@
             style="?metaButtonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black_overlay"
+            android:background="#ff967c"
             android:orientation="horizontal"
             tools:ignore="UselessParent">
         </LinearLayout>

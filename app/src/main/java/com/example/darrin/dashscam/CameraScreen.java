@@ -2,6 +2,8 @@ package com.example.darrin.dashscam;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
 import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +23,7 @@ import android.widget.Button;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class CameraScreen extends AppCompatActivity {
+public class CameraScreen extends AppCompatActivity{
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -43,6 +45,9 @@ public class CameraScreen extends AppCompatActivity {
     private View mContentView;
     private View mControlsView;
     private boolean mVisible;
+
+    private double LATITUDE = 43.0147;
+    private double LONGITUDE = -81.3049;
 
     private Place[] places;
     private int placeNumber = -1;
@@ -90,7 +95,7 @@ public class CameraScreen extends AppCompatActivity {
 
         // set your json string url here
         String yourJsonStringUrl =
-        "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=43.0147,-81.3049&radius=2000&type=restaurant&key="
+        "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + LATITUDE + "," + LONGITUDE + "&radius=2000&type=restaurant&key="
                 + "AIzaSyBxMCOTGHxkqZcAjIqcPgJVYCDTveFhFo0";
 
         // contacts JSONArray
@@ -180,10 +185,10 @@ public class CameraScreen extends AppCompatActivity {
         TextView t = (TextView)findViewById(R.id.fullscreen_content);
         placeNumber++;
         if(placeNumber < places.length) {
-            t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING + "\n\nAddress: " + places[placeNumber].ADDRESS);
+            t.setText(places[placeNumber].NAME + "\n\nRatings: " + places[placeNumber].RATING + "\n\nAddress: " + places[placeNumber].ADDRESS);
         } else {
             placeNumber = 0;
-            t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING + "\n\nAddress: " + places[placeNumber].ADDRESS);
+            t.setText(places[placeNumber].NAME + "\n\nRatings: " + places[placeNumber].RATING + "\n\nAddress: " + places[placeNumber].ADDRESS);
         }
     }
 
