@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.widget.Button;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -43,6 +44,7 @@ public class CameraScreen extends AppCompatActivity {
 
     private Place[] places;
     private int placeNumber = 0;
+    Button redirect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +157,7 @@ public class CameraScreen extends AppCompatActivity {
 
     private void nextPlace() {
         TextView t = (TextView)findViewById(R.id.fullscreen_content);
+        redirect = (Button) findViewById(R.id.the_button);
         if(placeNumber < places.length) {
             t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING);
             placeNumber++;
@@ -163,6 +166,7 @@ public class CameraScreen extends AppCompatActivity {
             t.setText(places[placeNumber].NAME + "\nRatings: " + places[placeNumber].RATING);
             placeNumber++;
         }
+        redirect.setOnClickListener(new GoogleMapButtonOnclickListener(places[placeNumber].));
     }
 
     private void hide() {
